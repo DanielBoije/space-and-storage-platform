@@ -1,2 +1,3 @@
 # space-and-storage-platform
-A marketplace for spaces and storage
+
+A marketplace for storage and other spaces
