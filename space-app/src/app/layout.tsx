@@ -1,3 +1,4 @@
+// Top layout file for project. Has to be named exactly layout.tsx
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
