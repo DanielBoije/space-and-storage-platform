@@ -35,4 +35,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## Branch naming convention
+
+Branches are named following the pattern change type/branch or ticket id/feature description.
+If there is no branch/ticket id, "no-ref" is the preferred way of leaving it empty
+
+Example: bug/foobar1337/make-button-clickable
+
 Good luck, have fun!
