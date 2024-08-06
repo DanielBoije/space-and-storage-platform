@@ -1,5 +1,10 @@
 // Top layout file for project. Has to be named exactly layout.tsx
+import NavBar from "@/components/navbar/NavBar";
 import { Metadata } from "next";
+import { Rubik } from "next/font/google";
+import "./globals.css";
+
+const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next.js",
@@ -13,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={rubik.className}>
+        <NavBar />
+        {children}
+      </body>
     </html>
   );
 }
