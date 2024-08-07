@@ -8,10 +8,10 @@ export default function LoginPage() {
         <h1 className="font-semibold text-2xl">Login</h1>
         <LoginForm />
         <p className="text-center">
-          Need to create an account?{" "}
+          Need to create an account?
           <Link className="text-indigo-500 hover:underline" href="/register">
             Create Account
-          </Link>{" "}
+          </Link>
         </p>
       </div>
     </div>
