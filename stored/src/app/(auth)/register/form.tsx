@@ -1,13 +1,12 @@
 "use client";
 
-import { EMAIL_ALREADY_IN_USE } from "@/app/_constants/errors";
+import ErrorCode from "@/app/_constants/errorCodes";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack";
 import { ReactNode, useState } from "react";
 
 export const RegistrationForm = () => {
@@ -15,7 +14,6 @@ export const RegistrationForm = () => {
   const [password, setPassword] = useState("123");
   const [name, setName] = useState("Foo Bar");
   const [error, setError] = useState<ReactNode>(null);
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,13 +40,9 @@ export const RegistrationForm = () => {
 
       router.push("/");
     } else {
-      enqueueSnackbar("Failed to register", {
-        variant: "error",
-      });
-
       const error = await response.json();
 
-      if (error.code === EMAIL_ALREADY_IN_USE) {
+      if (error.code === ErrorCode.EMAIL_ALREADY_IN_USE) {
         setError(
           <div>
             <p>{error.message}</p>

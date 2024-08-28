@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-import { EMAIL_ALREADY_IN_USE } from "@/app/_constants/errors";
+import ErrorCode from "@/app/_constants/errorCodes";
+import HttpStatusCode from "@/app/_constants/statusCodes";
 
 export default async function handler(
   request: NextApiRequest,
@@ -22,8 +23,8 @@ export default async function handler(
   if (existing) {
     console.error("register user failed: email in use");
 
-    response.status(400).send({
-      code: EMAIL_ALREADY_IN_USE,
+    response.status(HttpStatusCode.BAD_REQUEST).send({
+      code: ErrorCode.EMAIL_ALREADY_IN_USE,
       message: "The email address is already registered",
     });
 

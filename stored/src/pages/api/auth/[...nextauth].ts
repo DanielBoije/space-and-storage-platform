@@ -65,8 +65,6 @@ export const authOptions: AuthOptions = {
             user.password,
           );
 
-          console.debug("PASSWORD_MATCH:", passwordMatch);
-
           if (!passwordMatch) {
             throw new Error("Invalid login");
           }

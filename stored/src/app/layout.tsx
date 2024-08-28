@@ -6,7 +6,6 @@ import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import SnackbarProvider from "@/components/SnackbarProvider";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -26,10 +25,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={rubik.className}>
         <SessionProvider session={session}>
-          <SnackbarProvider>
-            <NavBar />
-            {children}
-          </SnackbarProvider>
+          <NavBar />
+          {children}
         </SessionProvider>
       </body>
     </html>

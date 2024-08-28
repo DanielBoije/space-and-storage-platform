@@ -18,8 +18,6 @@ export const Form = () => {
 
   const handleCredentialsLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
-
     try {
       const res = await signIn("credentials", {
         redirect: false,

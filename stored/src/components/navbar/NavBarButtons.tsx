@@ -1,6 +1,5 @@
 import React from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import AuthenticatedNavbarButtons from "./AuthenticatedNavbarButtons";
 import GuestNavbarButtons from "./GuestNavbarButtons";
 
