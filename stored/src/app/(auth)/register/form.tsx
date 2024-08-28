@@ -1,45 +1,80 @@
 "use client";
 
-import { Alert } from "@/components/ui/Alert";
+import { EMAIL_ALREADY_IN_USE } from "@/app/_constants/errors";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
+import { ReactNode, useState } from "react";
 
 export const RegistrationForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("placeholder@stored.net");
+  const [password, setPassword] = useState("123");
+  const [name, setName] = useState("Foo Bar");
+  const [error, setError] = useState<ReactNode>(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
 
-    // try {
-    //   const res = await fetch("/api/register", {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       email,
-    //       password,
-    //     }),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   if (res.ok) {
-    //     signIn();
-    //   } else {
-    //     setError((await res.json()).error);
-    //   }
-    // } catch (error: any) {
-    //   setError(error?.message);
-    // }
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      router.push("/");
+    } else {
+      enqueueSnackbar("Failed to register", {
+        variant: "error",
+      });
+
+      const error = await response.json();
+
+      if (error.code === EMAIL_ALREADY_IN_USE) {
+        setError(
+          <div>
+            <p>{error.message}</p>
+            <Link className="text-indigo-200" href="/forgot-password">
+              Forgot password?
+            </Link>
+          </div>,
+        );
+      } else {
+        setError(error.message ?? "Unknown error");
+      }
+    }
   };
 
   return (
-    <form onSubmit={onSubmit} className="space-y-12 w-full sm:w-[400px]">
+    <form onSubmit={handleSubmit} className="space-y-12 w-full sm:w-[400px]">
       <div className="grid w-full items-center gap-1.5">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          className="w-full"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          id="name"
+          type="text"
+        />
         <Label htmlFor="email">Email</Label>
         <Input
           className="w-full"
@@ -49,8 +84,6 @@ export const RegistrationForm = () => {
           id="email"
           type="email"
         />
-      </div>
-      <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="password">Password</Label>
         <Input
           className="w-full"
@@ -61,12 +94,17 @@ export const RegistrationForm = () => {
           type="password"
         />
       </div>
-      {/* {error && <Alert>{error}</Alert>} */}
       <div className="w-full">
         <Button className="w-full" size="lg">
           Register
         </Button>
       </div>
+      {!!error && (
+        <div className="border border-red-400 text-neutral-200 py-2 px-4 rounded-md">
+          <p className="font-bold">Registration failed</p>
+          {error}
+        </div>
+      )}
     </form>
   );
 };
