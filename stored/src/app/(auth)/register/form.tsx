@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 export const RegistrationForm = () => {
-  const [email, setEmail] = useState("placeholder@stored.net");
-  const [password, setPassword] = useState("123");
-  const [name, setName] = useState("Foo Bar");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState<ReactNode>(null);
   const router = useRouter();
 

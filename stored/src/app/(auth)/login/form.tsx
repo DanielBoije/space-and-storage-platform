@@ -68,7 +68,7 @@ export const Form = () => {
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="password">Password</Label>
         <Input
-          className="w-full color"
+          className="w-full"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
