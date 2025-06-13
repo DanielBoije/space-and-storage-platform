@@ -2,6 +2,9 @@
   "name": "stored",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
@@ -9,7 +12,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.7",
+    "@prisma/client": "^5.18.0",
     "@radix-ui/react-label": "^2.1.0",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "next": "14.1.4",
     "next-auth": "^4.24.7",
@@ -19,6 +25,7 @@
     "tailwind-merge": "^2.4.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -26,6 +33,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8",
+    "prisma": "^5.18.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

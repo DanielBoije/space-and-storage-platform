@@ -10,6 +10,7 @@ const NavBar = () => {
   const toggleNavbar = () => {
     setIsClicked(!isClicked);
   };
+
   return (
     <nav className="bg-indigo-900 sticky top-0 min-w-64">
       <div className="mx-auto px-4 md:px-8">

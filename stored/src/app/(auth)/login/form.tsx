@@ -1,43 +1,59 @@
 "use client";
 
-import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { FaGithub } from "react-icons/fa";
 
 export const Form = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const callbackUrl = searchParams?.get("callbackUrl") || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleCredentialsLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+        callbackUrl,
+      });
 
-    // try {
-    //   const res = await signIn("credentials", {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //     callbackUrl,
-    //   });
-    //   console.log("Res", res);
-    //   if (!res?.error) {
-    //     router.push(callbackUrl);
-    //   } else {
-    //     setError("Invalid email or password");
-    //   }
-    // } catch (err: any) {}
+      if (!res?.error) {
+        router.push(callbackUrl);
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
   };
 
+  function handleGithubLogin() {
+    signIn("github", {
+      callbackUrl,
+    }).catch((error) => {
+      console.error("failed to sign in with Github:", error);
+
+      setError("Github login failed");
+    });
+  }
+
+  if (error) {
+  }
+
   return (
-    <form onSubmit={onSubmit} className="space-y-12 w-full sm:w-[400px]">
+    <form
+      onSubmit={handleCredentialsLogin}
+      className="space-y-12 w-full sm:w-[400px]"
+    >
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -60,12 +76,15 @@ export const Form = () => {
           type="password"
         />
       </div>
-      {/* {error && <Alert>{error}</Alert>} */}
       <div className="w-full">
-        <Button className="w-full" size="lg">
+        <Button variant="default" className="w-full" size="lg">
           Login
         </Button>
       </div>
+      <hr />
+      <Button type="button" onClick={handleGithubLogin} className="w-full">
+        <span className="mr-2">Sign in with Github</span> <FaGithub />
+      </Button>
     </form>
   );
 };
